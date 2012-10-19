@@ -6,12 +6,18 @@ from django.core.urlresolvers import reverse
 
 
 register = template.Library()
- 
-#@register.simple_tag(takes_context=True)
 
+#@register.simple_tag(takes_context=True)
 @register.inclusion_tag('menu.html',takes_context=True)
 def menu(context,name='main'):
-	active_node = reverse_menu(context['request'].path)
+	try:
+		ap=context['request'].path
+		user = context['request'].user
+	except KeyError:
+		# pleaase make context request visible
+		ap="/"
+		user = ""
+	active_node = reverse_menu(ap)
 	els = populate_menu(name)
 	m = []
 	for e in els.values():
@@ -21,8 +27,8 @@ def menu(context,name='main'):
 			'url': reverse(e.name),
 			'icon':e.icon,
 		})
-
+	print "A"
 	return {
 		'menu':m,
-		'user':context['request'].user
+		'user':user
 	}
