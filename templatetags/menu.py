@@ -27,7 +27,6 @@ def menu(context,name='main'):
 			'url': reverse(e.name),
 			'icon':e.icon,
 		})
-	print "A"
 	return {
 		'menu':m,
 		'user':user
